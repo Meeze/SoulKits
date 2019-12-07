@@ -5,7 +5,6 @@ import de.realmeze.model.Kit;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,6 +21,7 @@ public class KitRegister {
 	private JavaPlugin plugin;
 	private ArrayList<KitController> kits;
 
+	//auto init kitlist from config
 	public KitRegister(JavaPlugin plugin) {
 		this.plugin = plugin;
 		this.kits = new ArrayList<KitController>();
@@ -29,6 +29,7 @@ public class KitRegister {
 
 	}
 
+	//initalizes the kits.yml file containing all kitnames
 	private void initKits(){
 		File file = new File(plugin.getDataFolder(), "kits.yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -48,6 +49,7 @@ public class KitRegister {
 		return kits;
 	}
 
+	//builds clickable message for all kits
 	public void showKits(Player player){
 		ComponentBuilder cb = new ComponentBuilder("Kits -> ");
 		for (KitController kit: getKits()) {
@@ -57,6 +59,11 @@ public class KitRegister {
 		player.spigot().sendMessage(cb.create());
 	}
 
+	/**
+	 *
+	 * @param name kitname
+	 * @return null | KitController
+	 */
 	public KitController findByName(String name){
 		for (KitController kit: getKits()) {
 			if(kit.getName().equals(name)){
@@ -66,6 +73,11 @@ public class KitRegister {
 		return null;
 	}
 
+	/**
+	 *
+	 * @param kit kit model
+	 * @return created KitController
+	 */
 	public KitController createKit(Kit kit){
 		KitController kitController = new KitController(kit, getPlugin());;
 		getKits().add(kitController);
@@ -74,6 +86,10 @@ public class KitRegister {
 		return kitController;
 	}
 
+	/**
+	 * registers in kits.yml
+	 * @param kitController to register
+	 */
 	private void registerInConfig(KitController kitController){
 		File file = new File(plugin.getDataFolder(), "kits.yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -90,6 +106,10 @@ public class KitRegister {
 		}
 	}
 
+	/**
+	 * checks if kitname exists in config and loads it
+	 * @param kitToLoad
+	 */
 	private void loadFromConfig(String kitToLoad) {
 		File file = new File(plugin.getDataFolder(), kitToLoad + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -106,8 +126,6 @@ public class KitRegister {
 			getKits().add(kitController);
 		}
 	}
-
-
 
 	public void saveKits() {
 		for (KitController kitController : getKits()) {

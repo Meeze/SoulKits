@@ -3,16 +3,12 @@ package de.realmeze.command;
 import de.realmeze.controller.KitController;
 import de.realmeze.model.Kit;
 import de.realmeze.service.KitRegister;
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
 
 public class KitMgrCommand implements CommandExecutor {
 
@@ -35,7 +31,7 @@ public class KitMgrCommand implements CommandExecutor {
 			Player player = (Player) sender;
 			switch (args.length){
 				case 0:
-					player.sendMessage("ladida");
+					player.sendMessage("/KitMgr [create/edit] <kitname>");
 					return false;
 				case 2:
 					String subCommand = args[0];
@@ -57,6 +53,7 @@ public class KitMgrCommand implements CommandExecutor {
  							return false;
 						}
  						kit.edit(player);
+ 						return false;
 					}
 
 			}
