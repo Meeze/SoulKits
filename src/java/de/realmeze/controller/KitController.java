@@ -1,6 +1,7 @@
 package de.realmeze.controller;
 
 import de.realmeze.model.Kit;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,22 +27,22 @@ public class KitController {
 		return kit;
 	}
 
-	public String getName(){
+	public String getName() {
 		return getKit().getName();
 	}
 
-	public Inventory getInventory(){
+	public Inventory getInventory() {
 		return getKit().getInventory();
 	}
 
-	public void edit(Player editor){
+	public void edit(Player editor) {
 		editor.openInventory(getInventory());
 	}
 
-	public void giveToPlayer(Player player){
-		for (ItemStack item: getInventory().getContents()) {
-			if(item != null){
-				if(!tryAutoArmor(player, item)){
+	public void giveToPlayer(Player player) {
+		for (ItemStack item : getInventory().getContents()) {
+			if (item != null) {
+				if (!tryAutoArmor(player, item)) {
 					player.getInventory().addItem(item);
 				}
 			}
@@ -64,26 +65,26 @@ public class KitController {
 	}
 
 	/**
-	 *
 	 * @param player
 	 * @param itemStack
 	 * @return true if auto armored player
 	 */
-	private boolean tryAutoArmor(Player player, ItemStack itemStack){
-		if(isBoot(itemStack)){
+	private boolean tryAutoArmor(Player player, ItemStack itemStack) {
+		if (isBoot(itemStack)) {
 			ItemStack currentBoots = player.getInventory().getBoots();
-			if(currentBoots == null || currentBoots.getType() == Material.AIR){
+			if(currentBoots == null){
 				player.getInventory().setBoots(itemStack);
 				return true;
 			}
+			return false;
 		}
 		return false;
 	}
 
-	private boolean isBoot(ItemStack itemStack){
+	private boolean isBoot(ItemStack itemStack) {
 		Material m = itemStack.getType();
 		//i dont think this will work reliably, but its just autoarmor lmao TODO fix this
-		if(m.toString().contains("boots")){
+		if (m.toString().contains("BOOTS")) {
 			return true;
 		}
 		return false;
